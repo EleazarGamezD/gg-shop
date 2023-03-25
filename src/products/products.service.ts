@@ -3,9 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import {Repository, ILike } from 'typeorm';
+import {Repository, ILike, DataSource } from 'typeorm';
 import {validate as isUUID } from 'uuid'
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { ProductImage } from './entities/product-image.entity';
+
 
 
 
@@ -18,13 +20,25 @@ export class ProductsService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>){}
 
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>
+    
+    //inyectamos la cadena de conexion en typeORM 
+    private readonly dataSource: DataSource
+
   // creacion de producto  
    async create(createProductDto: CreateProductDto) {
    try{
+
+    const {images = [], ...productDetails} = createProductDto
       const product = 
-          this.productRepository.create(createProductDto);
+          this.productRepository.create({
+            ...productDetails,
+          images: images.map (image => this.productImageRepository.create({url:image}))
+        });
+
     await this.productRepository.save(product);
-    return product;
+    return {...product, images};
     
      }
    catch(error){
@@ -33,25 +47,29 @@ export class ProductsService {
    } 
   }
 
+  //solicitud de todos los items 
   async findAll(paginationDto:PaginationDto) {
     const {limit, offset} = paginationDto //desestructuramos el paginationDTO para indicar el Limit y Offset
-    return this.productRepository.find({
+    const products = await this.productRepository.find({
       take:limit,
       skip:offset,
-      // TODO: relaciones 
+      relations:{
+       images:true,
+      }
     })
-    
+    return products.map ( products=>({...products, images:products.images.map(img => img.url)}))
   }
 
+// busqueda de un item especifico 
   async findOne(term: string) {
      let product:Product
-    if(isUUID(term)){
+     if(isUUID(term)){
       product = await this.productRepository.findOneBy({id:term})
     }
-    else {
-      const queryBuilder =  this.productRepository.createQueryBuilder()
-      product = await queryBuilder
-            //construimos el query donde comparamos los parametros que le vamos a enviar que en este caso puede ser slug o el title 
+     else {
+      const queryBuilder =  this.productRepository.createQueryBuilder('prod')
+      product = await queryBuilder 
+       //construimos el query donde comparamos los parámetros que le vamos a enviar que en este caso puede ser slug o el title 
       .where(' UPPER(title) = :title or slug = :slug or = :tags' , 
        // indicamos que el valor de TERM se puede aplicar a title y al slug
           {
@@ -59,33 +77,60 @@ export class ProductsService {
             slug: term.toLowerCase(),
             tags: term
           }
-        ).getOne() // con este indicamos que solo tome uno de estos dos valores 
-    }
+        )
+        .leftJoinAndSelect('prod.images','ProdImages')
+        .getOne() // con este indicamos que solo tome uno de estos dos valores 
+        
+      }
     
      if(!product)
      throw new NotFoundException(`Article whit id, name or no "${term}" not found `);
+     
      return product;
   
    }
-  
+   //funcion intermedia para regresar el Objeto (item) de manera plana 
+   async findOnePlain(term:string){
+    const {images= [], ...rest}= await this.findOne(term)
+    return{...rest,
+    images:images.map(image=>image.url)}
+   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
 
+    const {images, ...toUpdate}= updateProductDto;
+
     const product = await this.productRepository.preload({
       id:id,
-      ...updateProductDto
-    })
+      ...toUpdate,
+      })
     if(!product)
      throw new NotFoundException(`Article whit id, name or no "${id}" not found `);
-try {     
-     await this.productRepository.save(product)
+    
+     //creacion del QueryRunner para trabajar las imagenes de manera independiente 
+      const queryRunner = this.dataSource.createQueryRunner()
+      await queryRunner.connect() // iniciamos conexion
+      await queryRunner.startTransaction() // iniciamos la transaccion 
+      try { 
+        if(images){
+          await queryRunner.manager.delete(ProductImage,{product:{id}}) // le indicamos que borre las imagenes donde el Id conincida con el del producto 
+          product.images = images.map(image=>this.productImageRepository.create({url:image}))
+        }
+        
+           await queryRunner.manager.save(product)    
+           await queryRunner.commitTransaction()
+           await queryRunner.release()
+           //await this.productRepository.save(product)
+           return this.findOnePlain(id);
 }
 
-   catch(error){
-    console.log(error)
-    this.handleException(error)
+      catch(error){
+         await queryRunner.rollbackTransaction()
+         await queryRunner.release()
+         console.log(error)
+         this.handleException(error)
 }
-     return product;
+     
 
   
   }
@@ -107,4 +152,17 @@ try {
       throw new InternalServerErrorException('Unexepected error, Check Server Logs')
 
   }
+
+// destruccion total "semilla"
+
+async deleteAllProducts(){
+  const query = this.productImageRepository.createQueryBuilder('product')
+  try{
+    return await query.delete().where({}).execute()
+  }
+  catch(error){
+    this.handleException(error)
+  }
+}
+
 }

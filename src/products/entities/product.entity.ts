@@ -1,9 +1,9 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { CreateProductDto } from '../dto/create-product.dto';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ProductImage } from './product-image.entity';
 
 
 //representación del obejto en base de datos 
-@Entity()
+@Entity({name:'products'}) // renombrando tabla 
 export class Product {
 
     @PrimaryGeneratedColumn('uuid')
@@ -35,7 +35,15 @@ export class Product {
         default:[],
     })
     tags:string[]; 
-        
+
+    @OneToMany(
+        ()=> ProductImage,
+        (ProductImage) => ProductImage.product,
+        {cascade:true,
+         eager:true,
+        }
+    )
+    images?:ProductImage[];
 //verificamos si el SLUG existe y que cumpla las reglas 
  @BeforeInsert()
     checkSlugInsert(){
