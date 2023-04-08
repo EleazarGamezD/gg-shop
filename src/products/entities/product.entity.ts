@@ -1,5 +1,6 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProductImage } from './product-image.entity';
+import { AuthService } from "src/auth/auth.service";
 
 
 //representación del obejto en base de datos 
@@ -44,6 +45,8 @@ export class Product {
         }
     )
     images?:ProductImage[];
+    
+    
 //verificamos si el SLUG existe y que cumpla las reglas 
  @BeforeInsert()
     checkSlugInsert(){

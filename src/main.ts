@@ -13,6 +13,6 @@ async function bootstrap() {
    forbidNonWhitelisted: true,
   }));
   await app.listen(process.env.PORT); 
-  logger.log (`App Running on por ${ process.env.PORT}`)
+  logger.log (`App Running on port ${ process.env.PORT}`)
 }
 bootstrap();

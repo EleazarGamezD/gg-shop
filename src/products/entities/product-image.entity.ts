@@ -9,6 +9,7 @@ id:number;
 
 @Column('text')
 url:string;
+
 @ManyToOne(
     () => Product,
     (product) => product.images,
