@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
 
-import { User } from 'src/auth/entities/user.entity';
+
 
 @Module({
   controllers: [ProductsController],

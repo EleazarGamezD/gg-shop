@@ -23,10 +23,10 @@ export class ProductsService {
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>
     
-    //inyectamos la cadena de conexion en typeORM 
+    //inyectamos la cadena de conexión en typeORM 
     private readonly dataSource: DataSource
 
-  // creacion de producto  
+  // creación de producto  
    async create(createProductDto: CreateProductDto) {
    try{
 
@@ -60,7 +60,7 @@ export class ProductsService {
     return products.map ( products=>({...products, images:products.images.map(img => img.url)}))
   }
 
-// busqueda de un item especifico 
+// búsqueda de un item especifico 
   async findOne(term: string) {
      let product:Product
      if(isUUID(term)){
@@ -146,10 +146,10 @@ export class ProductsService {
   private handleException (error:any)  {
     if (error.code === '23505')
     throw new BadGatewayException(error.detail);
-     
-     
-     this.logger.error(error)
-      throw new InternalServerErrorException('Unexepected error, Check Server Logs')
+    
+    
+    this.logger.error(error)
+      throw new InternalServerErrorException('Unexpected error, Check Server Logs')
 
   }
 

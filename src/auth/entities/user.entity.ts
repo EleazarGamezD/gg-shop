@@ -1,5 +1,4 @@
-import { Product } from "src/products/entities/product.entity";
-import { Column, Entity, ManyToOne,  PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity,   PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('users')
@@ -11,7 +10,7 @@ export class User {
     @Column('text', {unique:true})
     email:string;
 
-    @Column('text',)
+    @Column('text',{select:false})
     password:string;
 
     @Column('text',)
@@ -26,11 +25,16 @@ export class User {
     })
     roles:string[];
 
-    @ManyToOne(
-    () => Product,
-    (product) => product.id,
-    { onDelete: 'CASCADE'} // se indica que borre la INFO que pertenecen al id padre 
-)
-    product: Product
+    @BeforeInsert()
+    checkFieldsBeforeInsert(){
+        this.email=this.email.toLowerCase().trim()
+    }
+    @BeforeUpdate()
+        checkFieldsBeforeUpdate(){
+            this.checkFieldsBeforeInsert()
+        
+    }
+    
+    
 }
 
