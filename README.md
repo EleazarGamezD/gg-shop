@@ -13,7 +13,7 @@
 4.- cambiar las variables  de entorno
 
 5.- levantar la base  de datos 
-
+ 
 ```
 docker-compose up -d
 ```

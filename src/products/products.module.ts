@@ -4,6 +4,7 @@ import { ProductsController } from './products.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 
 
@@ -11,8 +12,8 @@ import { ProductImage } from './entities/product-image.entity';
   controllers: [ProductsController],
   providers: [ProductsService],
   imports: [
-    TypeOrmModule.forFeature([Product,ProductImage]) // se le indica las entities (tablas y estructas ) para que sean leidas en el proyecto.
-  ],
+    TypeOrmModule.forFeature([Product,ProductImage]), // se le indica las entities (tablas y estructas ) para que sean leidas en el proyecto.
+    AuthModule],
   exports:[ProductsService,TypeOrmModule]
 })
 export class ProductsModule {}

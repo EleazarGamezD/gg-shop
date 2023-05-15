@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import {Repository, ILike, DataSource } from 'typeorm';
+import {Repository,  DataSource } from 'typeorm';
 import {validate as isUUID } from 'uuid'
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { ProductImage } from './entities/product-image.entity';
