@@ -7,6 +7,7 @@ import {Repository,  DataSource } from 'typeorm';
 import {validate as isUUID } from 'uuid'
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { ProductImage } from './entities/product-image.entity';
+import { User } from 'src/auth/entities/user.entity';
 
 
 
@@ -27,14 +28,15 @@ export class ProductsService {
     private readonly dataSource: DataSource
 
   // creación de producto  
-   async create(createProductDto: CreateProductDto) {
+   async create(createProductDto: CreateProductDto, user: User) {
    try{
 
     const {images = [], ...productDetails} = createProductDto
       const product = 
           this.productRepository.create({
             ...productDetails,
-          images: images.map (image => this.productImageRepository.create({url:image}))
+          images: images.map (image => this.productImageRepository.create({url:image})),
+          user,
         });
 
     await this.productRepository.save(product);
@@ -96,7 +98,7 @@ export class ProductsService {
     images:images.map(image=>image.url)}
    }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto, user:User) {
 
     const {images, ...toUpdate}= updateProductDto;
 
@@ -116,7 +118,7 @@ export class ProductsService {
           await queryRunner.manager.delete(ProductImage,{product:{id}}) // le indicamos que borre las imagenes donde el Id conincida con el del producto 
           product.images = images.map(image=>this.productImageRepository.create({url:image}))
         }
-        
+           product.user = user;
            await queryRunner.manager.save(product)    
            await queryRunner.commitTransaction()
            await queryRunner.release()

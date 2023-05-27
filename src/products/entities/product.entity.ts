@@ -1,6 +1,7 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProductImage } from './product-image.entity';
 import { AuthService } from "src/auth/auth.service";
+import { User } from "src/auth/entities/user.entity";
 
 
 //representación del obejto en base de datos 
@@ -43,8 +44,16 @@ export class Product {
         {cascade:true,
          eager:true,
         }
-    )
+    )   
     images?:ProductImage[];
+    
+    @ManyToOne(
+        ()=>User,
+        (user)=> user.product,
+        {eager:true}
+    )
+    user: User
+    
     
     
 //verificamos si el SLUG existe y que cumpla las reglas 
