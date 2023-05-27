@@ -2,36 +2,45 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, ManyToOne, OneT
 import { ProductImage } from './product-image.entity';
 import { AuthService } from "src/auth/auth.service";
 import { User } from "src/auth/entities/user.entity";
+import { ApiProperty } from "@nestjs/swagger";
 
 
 //representación del obejto en base de datos 
 @Entity({name:'products'}) // renombrando tabla 
 export class Product {
-
+    @ApiProperty()
     @PrimaryGeneratedColumn('uuid')
     id:string;
 
+    @ApiProperty()
     @Column('text', { unique:true })
     title: string;
     
+    @ApiProperty()
     @Column('float',{default:0})
     price:number;
     
+    @ApiProperty()
     @Column({ type: 'text',  nullable:true})
     description: string;
     
+    @ApiProperty()
     @Column('text',{unique: true})
     slug?: string;
     
+    @ApiProperty()
     @Column('int',{default:0})
     stock: number;
     
+    @ApiProperty()
     @Column('text',{array: true})
     sizes: string[];
     
+    @ApiProperty()
     @Column('text',)
     gender: string;
     
+    @ApiProperty()
     @Column('text',{
         array: true,
         default:[],

@@ -6,15 +6,21 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Auth, GetUser } from 'src/auth/decorator';
 import { ValidRoles } from 'src/auth/interfaces';
 import { User } from 'src/auth/entities/user.entity';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Product } from './entities/product.entity';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
   @Auth()
+  @ApiResponse({status:201, description: 'product was created', type: Product })
+  @ApiResponse({status:400, description: 'Bad Request'})
+  @ApiResponse({status:403, description: 'Forbidden, Token related'})
   create(@Body() createProductDto: CreateProductDto,
-         @GetUser() user:User,) {
+  @GetUser() user:User,) {
     return this.productsService.create(createProductDto, user);
   }
 
@@ -30,8 +36,8 @@ export class ProductsController {
   
 
   @Patch(':id')
-   @Auth(ValidRoles.user)
-   update(
+  @Auth(ValidRoles.user)
+  update(
     @Param('id', ParseUUIDPipe) id: string, 
     @Body() updateProductDto: UpdateProductDto,
     @GetUser() user:User,) {
@@ -39,7 +45,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-   @Auth(ValidRoles.user)
+  @Auth(ValidRoles.user)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
   }
