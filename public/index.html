@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GG-Shop</title>
+  </head>
+  <body>
+    <p>
+      "info": { "_postman_id": "0b421dae-9c34-461a-9b5c-fc62883577e9", "name":
+      "GG-shop", "schema":
+      "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "_exporter_id": "24276080" }, "item": [ { "name": "Crear Productos ",
+      "request": { "method": "POST", "header": [], "body": { "mode": "raw",
+      "raw": "{\r\n \"title\": \"camisa de eleazar's\",\r\n \"sizes\": [
+      \"M\",\"S\",\"XXL\" ],\r\n \"gender\": \"men\",\r\n \"price\" :
+      25000\r\n\r\n}", "options": { "raw": { "language": "json" } } }, "url": {
+      "raw": "http://localhost:3000/api/products/", "protocol": "http", "host":
+      [ "localhost" ], "port": "3000", "path": [ "api", "products", "" ] } },
+      "response": [ { "name": "Crear Productos ", "originalRequest": { "method":
+      "POST", "header": [], "body": { "mode": "raw", "raw": "{\r\n \"title\":
+      \"camisa de eleazar´s\",\r\n \"sizes\": [ \"M\",\"S\",\"XXL\" ],\r\n
+      \"gender\": \"men\",\r\n \"price\" : 25000\r\n}", "options": { "raw": {
+      "language": "json" } } }, "url": { "raw":
+      "http://localhost:3000/api/products", "protocol": "http", "host": [
+      "localhost" ], "port": "3000", "path": [ "api", "products" ] } },
+      "status": "Internal Server Error", "code": 500,
+      "_postman_previewlanguage": "json", "header": [ { "key": "X-Powered-By",
+      "value": "Express" }, { "key": "Content-Type", "value": "application/json;
+      charset=utf-8" }, { "key": "Content-Length", "value": "99" }, { "key":
+      "ETag", "value": "W/\"63-ZwUl+Vh6P9Skd9CKtXCiPopupQ8\"" }, { "key":
+      "Date", "value": "Fri, 17 Mar 2023 01:28:38 GMT" }, { "key": "Connection",
+      "value": "keep-alive" }, { "key": "Keep-Alive", "value": "timeout=5" } ],
+      "cookie": [], "body": "{\n \"statusCode\": 500,\n \"message\":
+      \"Unexepected error, Check Server Logs\",\n \"error\": \"Internal Server
+      Error\"\n}" } ] }, { "name": "buscar todos los productos",
+      "protocolProfileBehavior": { "disableBodyPruning": true }, "request": {
+      "method": "GET", "header": [], "body": { "mode": "raw", "raw": "" },
+      "url": { "raw": "http://localhost:3000/api/products/", "protocol": "http",
+      "host": [ "localhost" ], "port": "3000", "path": [ "api", "products", "" ]
+      } }, "response": [] }, { "name": "DELETE product by uuid ", "request": {
+      "method": "DELETE", "header": [], "url": { "raw":
+      "http://localhost:3000/api/products/", "protocol": "http", "host": [
+      "localhost" ], "port": "3000", "path": [ "api", "products", "" ] } },
+      "response": [ { "name": "DELETE product by uuid ", "originalRequest": {
+      "method": "DELETE", "header": [], "url": { "raw":
+      "http://localhost:3000/api/products/d55c960b-252f-45d0-b9fc-c70a2d80781b",
+      "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [
+      "api", "products", "d55c960b-252f-45d0-b9fc-c70a2d80781b" ] } }, "status":
+      "Internal Server Error", "code": 500, "_postman_previewlanguage": "json",
+      "header": [ { "key": "X-Powered-By", "value": "Express" }, { "key":
+      "Content-Type", "value": "application/json; charset=utf-8" }, { "key":
+      "Content-Length", "value": "52" }, { "key": "ETag", "value":
+      "W/\"34-rlKccw1E+/fV8niQk4oFitDfPro\"" }, { "key": "Date", "value": "Fri,
+      17 Mar 2023 16:15:37 GMT" }, { "key": "Connection", "value": "keep-alive"
+      }, { "key": "Keep-Alive", "value": "timeout=5" } ], "cookie": [], "body":
+      "{\n \"statusCode\": 500,\n \"message\": \"Internal server error\"\n}" } ]
+      }, { "name": "Get products by UUID ", "request": { "method": "GET",
+      "header": [], "url": { "raw": "http://localhost:3000/api/products/id",
+      "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [
+      "api", "products", "id" ] } }, "response": [] }, { "name": "buscar todos
+      los productos con paginacion ", "protocolProfileBehavior": {
+      "disableBodyPruning": true }, "request": { "method": "GET", "header": [],
+      "body": { "mode": "raw", "raw": "" }, "url": { "raw":
+      "http://localhost:3000/api/products/?limit=2&offset=0", "protocol":
+      "http", "host": [ "localhost" ], "port": "3000", "path": [ "api",
+      "products", "" ], "query": [ { "key": "limit", "value": "2" }, { "key":
+      "offset", "value": "0" } ] } }, "response": [] }, { "name": "aplicar SEED
+      ", "request": { "method": "GET", "header": [], "url": { "raw":
+      "http://localhost:3000/api/seed", "protocol": "http", "host": [
+      "localhost" ], "port": "3000", "path": [ "api", "seed" ] } }, "response":
+      [] }, { "name": "Registrar usuarios ", "request": { "method": "POST",
+      "header": [], "body": { "mode": "raw", "raw":
+      "{\"email\":\"Prueba@google.com\",\r\n\"password\":\"Sla87%%\",\r\n\"fullName\":\"Eleazar
+      Gamez \"\r\n\r\n}", "options": { "raw": { "language": "json" } } }, "url":
+      { "raw": "http://localhost:3000/api/auth/register", "protocol": "http",
+      "host": [ "localhost" ], "port": "3000", "path": [ "api", "auth",
+      "register" ] } }, "response": [] }, { "name": "Logins logear ", "request":
+      { "method": "POST", "header": [], "body": { "mode": "raw", "raw":
+      "{\"email\":\"prueba@google.com\",\r\n\"password\":\"Sla87%%\"\r\n}",
+      "options": { "raw": { "language": "json" } } }, "url": { "raw":
+      "http://localhost:3000/api/auth/login", "protocol": "http", "host": [
+      "localhost" ], "port": "3000", "path": [ "api", "auth", "login" ] } },
+      "response": [] }, { "name": "prueba Ruta Privada", "request": { "auth": {
+      "type": "bearer", "bearer": [ { "key": "token", "value":
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYUBnb29nbGUuY29tIiwiaWF0IjoxNjgwOTkyOTA2LCJleHAiOjE2ODEwMDAxMDZ9.7QFlGe8OMQZswlL4Stiy6P2AMDGoLoUyotP_ohORVGs",
+      "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw":
+      "http://localhost:3000/api/auth/private", "protocol": "http", "host": [
+      "localhost" ], "port": "3000", "path": [ "api", "auth", "private" ] } },
+      "response": [] } ] }
+    </p>
+  </body>
+</html>

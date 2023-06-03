@@ -40,5 +40,5 @@ lerna-debug.log*
 /postgres
 
 #Folders 
-/public
+
 /static/products 
