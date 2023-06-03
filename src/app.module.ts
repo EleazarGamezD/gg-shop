@@ -36,7 +36,7 @@ import { MessagesWsModule } from './messages-ws/messages-ws.module';
    SeedModule, 
    FilesModule,
    ServeStaticModule.forRoot({
- rootPath: join(__dirname,'..','/public'),
+ rootPath: join(__dirname,'..','public'),
 }),
    AuthModule,
    MessagesWsModule
