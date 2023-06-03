@@ -13,7 +13,6 @@ export class SeedController {
 
 @ApiTags('Seed')
   @Get()
-  @Auth()
   executedSeed() {
     return this.seedService.runSeed();
   }
