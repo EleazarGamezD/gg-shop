@@ -4,9 +4,13 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const logger = new Logger ('Bootstrap')
+  const app = await NestFactory.create(AppModule, { cors: true });
+  
   app.enableCors();
+
+  const logger = new Logger ('Bootstrap')
+  
+
   app.setGlobalPrefix('api');
    const config = new DocumentBuilder()
     .setTitle('gg-shop')
